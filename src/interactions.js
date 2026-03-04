@@ -85,6 +85,9 @@ class Accordion {
     const sourceImages = this.element.querySelectorAll('.accordion__gallery-image');
     if (!sourceImages.length) return;
 
+    // Clear static placeholder — cloned images take over. If JS never runs, placeholder stays visible.
+    this.imageContainer.innerHTML = '';
+
     sourceImages.forEach((img) => {
       const clone = img.cloneNode(true);
       this.imageContainer.appendChild(clone);
