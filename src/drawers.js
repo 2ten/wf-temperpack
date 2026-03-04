@@ -23,11 +23,6 @@ export function init() {
   const drawerClose = drawer.querySelector('.drawer__close');
 
   // ============================================
-  // CACHE
-  // ============================================
-  const drawerCache = {};
-
-  // ============================================
   // OPEN / CLOSE
   // ============================================
   function openDrawer() {
@@ -47,51 +42,10 @@ export function init() {
   // ============================================
   // RENDER
   // ============================================
-  function setLoading() {
-    drawerBody.classList.add('is-loading');
-    drawerBody.innerHTML = '<div class="drawer__loader"></div>';
-  }
-
   function renderContent(content) {
-    drawerBody.classList.remove('is-loading');
     drawerBody.innerHTML = '';
     drawerBody.appendChild(content.cloneNode(true));
     drawerBody.scrollTop = 0;
-  }
-
-  function renderError() {
-    drawerBody.classList.remove('is-loading');
-    drawerBody.innerHTML = '<p>Content could not be loaded.</p>';
-  }
-
-  // ============================================
-  // FETCH
-  // ============================================
-  function fetchDrawerContent(url) {
-    if (drawerCache[url]) {
-      renderContent(drawerCache[url]);
-      openDrawer();
-      return;
-    }
-
-    setLoading();
-    openDrawer();
-
-    fetch(url)
-      .then(function (r) {
-        if (!r.ok) throw new Error('Network response was not ok');
-        return r.text();
-      })
-      .then(function (html) {
-        const doc     = new DOMParser().parseFromString(html, 'text/html');
-        const content = doc.querySelector('.drawer-content');
-        if (!content) throw new Error('.drawer-content not found');
-        drawerCache[url] = content;
-        renderContent(content);
-      })
-      .catch(function () {
-        renderError();
-      });
   }
 
   // ============================================
@@ -101,7 +55,23 @@ export function init() {
     const trigger = e.target.closest('[data-drawer="true"]');
     if (!trigger) return;
     e.preventDefault();
-    fetchDrawerContent(trigger.href);
+
+    const card    = trigger.closest('[data-drawer-card]');
+    if (!card) return;
+    const content = card.querySelector('[data-drawer-content]');
+    if (!content) return;
+
+    renderContent(content);
+    openDrawer();
+  });
+
+  // <a role="button"> does not fire click on Space natively — handle explicitly.
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== ' ') return;
+    const trigger = document.activeElement.closest('[data-drawer="true"]');
+    if (!trigger) return;
+    e.preventDefault();
+    trigger.click();
   });
 
   // ============================================
