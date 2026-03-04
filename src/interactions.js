@@ -77,7 +77,9 @@ class Accordion {
   }
 
   setupImageSwap() {
-    this.imageContainer = this.element.querySelector('.image-container');
+    const section = this.element.closest('section');
+    if (!section) return;
+    this.imageContainer = section.querySelector('.image-container');
     if (!this.imageContainer) return;
 
     const sourceImages = this.element.querySelectorAll('.accordion__gallery-image');
