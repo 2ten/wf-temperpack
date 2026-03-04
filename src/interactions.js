@@ -80,12 +80,11 @@ class Accordion {
     this.imageContainer = this.element.querySelector('.image-container');
     if (!this.imageContainer) return;
 
-    const sourceImages = this.element.querySelectorAll('.accordion-item__image');
+    const sourceImages = this.element.querySelectorAll('.accordion__gallery-image');
     if (!sourceImages.length) return;
 
-    sourceImages.forEach((img, index) => {
+    sourceImages.forEach((img) => {
       const clone = img.cloneNode(true);
-      clone.classList.remove('accordion-item__image');
       this.imageContainer.appendChild(clone);
       this.images.push(clone);
     });
