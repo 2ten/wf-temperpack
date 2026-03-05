@@ -1,5 +1,11 @@
 import { showDrawerOverlay, hideDrawerOverlay, lockScroll, unlockScroll } from './utils.js';
 
+// ============================================
+// HUBSPOT CONFIG
+// ============================================
+const HS_PORTAL_ID = '44622623';
+const HS_REGION    = 'na1';
+
 export function init() {
   // ============================================
   // ELEMENTS
@@ -40,12 +46,49 @@ export function init() {
   }
 
   // ============================================
-  // RENDER
+  // RENDER — static content
   // ============================================
   function renderContent(content) {
     drawerBody.innerHTML = '';
     drawerBody.appendChild(content.cloneNode(true));
     drawerBody.scrollTop = 0;
+  }
+
+  // ============================================
+  // RENDER — HubSpot form
+  // ============================================
+  function renderForm(card) {
+    drawerBody.innerHTML = '';
+
+    const formId      = card.dataset.hsFormId;
+    const leadsource  = card.dataset.hsLeadsource;
+    const content     = card.querySelector('[data-drawer-content]');
+
+    if (!formId || typeof hbspt === 'undefined') return false;
+
+    // Render static content (h3, intro text, etc.) above the form if present.
+    if (content) {
+      drawerBody.appendChild(content.cloneNode(true));
+    }
+
+    const target = document.createElement('div');
+    target.id = 'hs-form-target';
+    drawerBody.appendChild(target);
+
+    hbspt.forms.create({
+      portalId: HS_PORTAL_ID,
+      region:   HS_REGION,
+      formId,
+      target:   '#hs-form-target',
+      onFormReady: function ($form) {
+        if (!leadsource) return;
+        const field = $form.find('input[name="leadsource"]');
+        if (field.length) field.val(leadsource).trigger('change');
+      },
+    });
+
+    drawerBody.scrollTop = 0;
+    return true;
   }
 
   // ============================================
@@ -56,12 +99,17 @@ export function init() {
     if (!trigger) return;
     e.preventDefault();
 
-    const card    = trigger.closest('[data-drawer-card]');
+    const card = trigger.closest('[data-drawer-card]');
     if (!card) return;
-    const content = card.querySelector('[data-drawer-content]');
-    if (!content) return;
 
-    renderContent(content);
+    if (card.dataset.hsFormId) {
+      if (!renderForm(card)) return;
+    } else {
+      const content = card.querySelector('[data-drawer-content]');
+      if (!content) return;
+      renderContent(content);
+    }
+
     openDrawer();
   });
 
