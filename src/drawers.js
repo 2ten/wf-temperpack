@@ -61,7 +61,7 @@ export function init() {
     drawerBody.innerHTML = '';
 
     const formId      = card.dataset.hsFormId;
-    const leadsource  = card.dataset.hsLeadsource;
+    const leadsource  = card.dataset.hsLeadsourceDesc;
     const content     = card.querySelector('[data-drawer-content]');
 
     if (!formId || typeof hbspt === 'undefined') return false;
@@ -81,9 +81,13 @@ export function init() {
       formId,
       target:   '#hs-form-target',
       onFormReady: function ($form) {
-        if (!leadsource) return;
-        const field = $form.find('input[name="leadsource"]');
-        if (field.length) field.val(leadsource).trigger('change');
+        // Always set leadsource to Inbound Email — all drawer form submissions are inbound.
+        $form.find('input[name="leadsource"]').val('Inbound Email').trigger('change');
+
+        // Set source description from component property (data-hs-leadsource).
+        if (leadsource) {
+          $form.find('input[name="lead_source_description__c"]').val(leadsource).trigger('change');
+        }
       },
     });
 
