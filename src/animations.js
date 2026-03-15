@@ -1,7 +1,33 @@
+import SplitType from 'split-type';
+
 export function init() {
   initGreenText();
+  initSplitHeadlines(); // must run after initGreenText — green text rewrites innerHTML first
   initMarquee();
   // TODO: viewport entry animations (animate-fade-up, animate-scale-in) — Intersection Observer
+}
+
+function initSplitHeadlines() {
+  const headings = document.querySelectorAll('[data-mask-animation]');
+  if (!headings.length) return;
+
+  // Respect prefers-reduced-motion — skip split and animation entirely.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // NOTE: headings with data-green-text have their innerHTML rewritten before
+  // this runs. SplitType interaction with the injected <span> needs revisiting.
+  headings.forEach(heading => {
+    const split = new SplitType(heading, { types: 'lines, words' });
+
+    // Each .line is the overflow:hidden mask. All words in a line share the
+    // same delay so they animate as a unit, one line after another.
+    split.lines.forEach((line, i) => {
+      line.style.overflow = 'hidden';
+      line.querySelectorAll('.word').forEach(word => {
+        word.style.setProperty('--delay', `${i * 0.08}s`);
+      });
+    });
+  });
 }
 
 function initMarquee() {

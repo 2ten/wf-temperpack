@@ -10,4 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
   initInteractions();
   initAnimations();
   initSwipers();
+
+  // Add is-loaded to <html> once fonts are ready — triggers CSS hero animations.
+  document.fonts.ready.then(() => {
+    document.documentElement.classList.add('is-loaded');
+  });
 });
