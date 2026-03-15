@@ -2,16 +2,22 @@ import SplitType from 'split-type';
 
 export function init() {
   initGreenText();
-  initSplitHeadlines(); // must run after initGreenText — green text rewrites innerHTML first
+  initSplitHeadlines();  // must run after initGreenText — green text rewrites innerHTML first
+  initHeroFadeUp();
   initMarquee();
-  // TODO: viewport entry animations (animate-fade-up, animate-scale-in) — Intersection Observer
+  initSectionAnimations();
+  initImageAnimations();
 }
 
+// ============================================
+// HERO — masked headline (SplitType line reveal)
+// Triggered by html.is-loaded via CSS.
+// ============================================
 function initSplitHeadlines() {
-  const headings = document.querySelectorAll('[data-mask-animation]');
+  const headings = document.querySelectorAll('[data-animate-mask]');
   if (!headings.length) return;
 
-  // Respect prefers-reduced-motion — skip split and animation entirely.
+  // Skip split entirely — heading stays as plain text, is-loaded reveals it.
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   // NOTE: headings with data-green-text have their innerHTML rewritten before
@@ -30,6 +36,83 @@ function initSplitHeadlines() {
   });
 }
 
+// ============================================
+// HERO — fade up elements
+// Sets --delay from attribute value. CSS html.is-loaded triggers animation.
+// ============================================
+function initHeroFadeUp() {
+  const elements = document.querySelectorAll('[data-animate-fadeup]');
+  if (!elements.length) return;
+
+  elements.forEach(el => {
+    const delay = parseFloat(el.dataset.animateFadeup);
+    if (delay) el.style.setProperty('--delay', `${delay}s`);
+  });
+}
+
+// ============================================
+// SECTIONS — intersection observer
+// One observer per section. CSS handles all child animations off is-visible.
+// ============================================
+function initSectionAnimations() {
+  const sections = document.querySelectorAll('[data-animate]');
+  if (!sections.length) return;
+
+  // Reduced motion — show all sections immediately, no animation.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    sections.forEach(s => s.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target); // one-time, stays visible
+    });
+  }, { threshold: 0.15 });
+
+  sections.forEach(section => observer.observe(section));
+}
+
+// ============================================
+// IMAGES — intersection observer + lazy load check
+// Waits for img.complete before adding is-visible to avoid animating empty boxes.
+// ============================================
+function initImageAnimations() {
+  const wrappers = document.querySelectorAll('[class*="img-wrap"]');
+  if (!wrappers.length) return;
+
+  // Reduced motion — show all images immediately.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    wrappers.forEach(w => w.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+
+      const img = entry.target.querySelector('img');
+
+      if (!img || img.complete) {
+        entry.target.classList.add('is-visible');
+      } else {
+        // Image not yet loaded — wait for it then animate.
+        img.addEventListener('load', () => {
+          entry.target.classList.add('is-visible');
+        }, { once: true });
+      }
+    });
+  }, { threshold: 0.1 });
+
+  wrappers.forEach(wrapper => observer.observe(wrapper));
+}
+
+// ============================================
+// MARQUEE — infinite horizontal scroll
+// ============================================
 function initMarquee() {
   const marquees = document.querySelectorAll('.marquee');
   if (!marquees.length) return;
@@ -64,9 +147,11 @@ function initMarquee() {
   });
 }
 
+// ============================================
+// GREEN TEXT — wraps data-green-text value in a coloured span
+// ============================================
 function initGreenText() {
   const heroHeadings = document.querySelectorAll('h1[data-green-text]');
-
   if (!heroHeadings.length) return;
 
   heroHeadings.forEach(heading => {
