@@ -70,7 +70,7 @@ function initSectionAnimations() {
       entry.target.classList.add('is-visible');
       observer.unobserve(entry.target); // one-time, stays visible
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0, rootMargin: `0px 0px ${getIOOffset()} 0px` });
 
   sections.forEach(section => observer.observe(section));
 }
@@ -105,9 +105,17 @@ function initImageAnimations() {
         }, { once: true });
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0, rootMargin: `0px 0px ${getIOOffset()} 0px` });
 
   wrappers.forEach(wrapper => observer.observe(wrapper));
+}
+
+// Reads --animate-io-offset from CSS so the value is breakpoint-aware.
+// Define in :root and override in media queries — no JS changes needed.
+function getIOOffset() {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue('--animate-io-offset')
+    .trim() || '-80px';
 }
 
 // ============================================
