@@ -1,10 +1,5 @@
 import { showDrawerOverlay, hideDrawerOverlay, lockScroll, unlockScroll } from './utils.js';
-
-// ============================================
-// HUBSPOT CONFIG
-// ============================================
-const HS_PORTAL_ID = '44622623';
-const HS_REGION    = 'na1';
+import { createHSForm } from './forms.js';
 
 export function init() {
   // ============================================
@@ -64,32 +59,13 @@ export function init() {
     const leadsource  = card.dataset.hsLeadsourceDesc;
     const content     = card.querySelector('[data-drawer-content]');
 
-    if (!formId || typeof hbspt === 'undefined') return false;
-
     // Render static content (h3, intro text, etc.) above the form if present.
     if (content) {
       drawerBody.appendChild(content.cloneNode(true));
     }
 
-    const target = document.createElement('div');
-    target.id = 'hs-form-target';
-    drawerBody.appendChild(target);
-
-    hbspt.forms.create({
-      portalId: HS_PORTAL_ID,
-      region:   HS_REGION,
-      formId,
-      target:   '#hs-form-target',
-      onFormReady: function ($form) {
-        // Always set leadsource to Inbound Email — all drawer form submissions are inbound.
-        $form.find('input[name="leadsource"]').val('Inbound Email').trigger('change');
-
-        // Set source description from component property (data-hs-leadsource).
-        if (leadsource) {
-          $form.find('input[name="lead_source_description__c"]').val(leadsource).trigger('change');
-        }
-      },
-    });
+    const ok = createHSForm(drawerBody, formId, leadsource);
+    if (!ok) return false;
 
     drawerBody.scrollTop = 0;
     return true;
