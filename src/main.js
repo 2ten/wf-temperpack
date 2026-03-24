@@ -4,6 +4,7 @@ import { init as initInteractions } from './interactions.js';
 import { init as initAnimations   } from './animations.js';
 import { init as initSwipers      } from './swipers.js';
 import { init as initForms        } from './forms.js';
+import { init as initFootnotes    } from './footnotes.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   initNavigation();
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initAnimations();
   initSwipers();
   initForms();
+  initFootnotes();
 
   // Add is-loaded to <html> once fonts are ready — triggers CSS hero animations.
   document.fonts.ready.then(() => {

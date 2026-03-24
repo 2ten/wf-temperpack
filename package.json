@@ -10,6 +10,7 @@
     "esbuild": "^0.24.0"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.7.6",
     "split-type": "^0.3.4"
   }
 }
