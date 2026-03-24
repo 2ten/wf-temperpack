@@ -61,7 +61,7 @@ export function init() {
       },
       pagination: {
         el: '.swiper__pagination--testimonials',
-        clickable: true,
+        type: 'fraction',
       },
       navigation: {
         nextEl: '.swiper__next--testimonials',
