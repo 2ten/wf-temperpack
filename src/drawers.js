@@ -55,16 +55,17 @@ export function init() {
   function renderForm(card) {
     drawerBody.innerHTML = '';
 
-    const formId      = card.dataset.hsFormId;
-    const leadsource  = card.dataset.hsLeadsourceDesc;
-    const content     = card.querySelector('[data-drawer-content]');
+    const formId       = card.dataset.hsFormId;
+    const leadsource   = card.dataset.hsLeadsourceDesc;
+    const instanceName = card.dataset.hsInstance;
+    const content      = card.querySelector('[data-drawer-content]');
 
     // Render static content (h3, intro text, etc.) above the form if present.
     if (content) {
       drawerBody.appendChild(content.cloneNode(true));
     }
 
-    const ok = createHSForm(drawerBody, formId, leadsource);
+    const ok = createHSForm(drawerBody, formId, leadsource, instanceName);
     if (!ok) return false;
 
     drawerBody.scrollTop = 0;

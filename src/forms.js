@@ -12,19 +12,24 @@ let formCount = 0;
 // Sets leadsource to "Inbound Email" and injects lead_source_description__c
 // from the optional leadsource argument.
 // ============================================
-export function createHSForm(container, formId, leadsource) {
+export function createHSForm(container, formId, leadsource, instanceName) {
   if (!formId || typeof hbspt === 'undefined') return false;
 
-  const targetId = `hs-form-target-${formCount++}`;
-  const target   = document.createElement('div');
-  target.id      = targetId;
+  const slug       = window.location.pathname.replace(/^\/|\/$/g, '').replace(/\//g, '-') || 'home';
+  const count      = formCount++;
+  const targetId   = `hs-form-target-${count}`;
+  const instanceId = instanceName ? `${slug}-${instanceName}` : `${slug}-${count}`;
+
+  const target = document.createElement('div');
+  target.id    = targetId;
   container.appendChild(target);
 
   hbspt.forms.create({
-    portalId: HS_PORTAL_ID,
-    region:   HS_REGION,
+    portalId:       HS_PORTAL_ID,
+    region:         HS_REGION,
     formId,
-    target:   `#${targetId}`,
+    target:         `#${targetId}`,
+    formInstanceId: instanceId,
     onFormReady: function ($form) {
       $form.find('input[name="leadsource"]').val('Inbound Email').trigger('change');
       if (leadsource) {
@@ -46,6 +51,6 @@ export function init() {
   if (!targets.length) return;
 
   targets.forEach(target => {
-    createHSForm(target, target.dataset.hsFormId, target.dataset.hsLeadsourceDesc);
+    createHSForm(target, target.dataset.hsFormId, target.dataset.hsLeadsourceDesc, target.dataset.hsInstance);
   });
 }
