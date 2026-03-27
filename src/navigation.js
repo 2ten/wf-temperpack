@@ -24,6 +24,8 @@ export function init() {
   const drawer         = document.querySelector('.mobile-nav-drawer');
   const mobileItems    = document.querySelectorAll('.mobile-nav__item:has(.mobile-nav-panel)');
   const mobileTriggers = document.querySelectorAll('.mobile-nav__trigger');
+  const searchBtn      = document.querySelector('.search-btn');
+  const headerSearch   = document.querySelector('.header-search');
 
   if (!header) return;
 
@@ -225,12 +227,45 @@ export function init() {
   });
 
   // ============================================
+  // SEARCH
+  // ============================================
+  function openSearch() {
+    if (!headerSearch) return;
+    headerSearch.classList.add('is-open');
+    headerSearch.setAttribute('aria-hidden', 'false');
+    searchBtn.setAttribute('aria-expanded', 'true');
+    const input = headerSearch.querySelector('input');
+    if (input) input.focus();
+  }
+
+  function closeSearch() {
+    if (!headerSearch) return;
+    headerSearch.classList.remove('is-open');
+    headerSearch.setAttribute('aria-hidden', 'true');
+    if (searchBtn) searchBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  if (searchBtn && headerSearch) {
+    searchBtn.addEventListener('click', function () {
+      headerSearch.classList.contains('is-open') ? closeSearch() : openSearch();
+    });
+  }
+
+  // Close search on click outside the header.
+  document.addEventListener('click', function (e) {
+    if (headerSearch && headerSearch.classList.contains('is-open') && !header.contains(e.target)) {
+      closeSearch();
+    }
+  });
+
+  // ============================================
   // ESCAPE KEY
   // ============================================
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       closeAll();
       closeDrawer();
+      closeSearch();
       hideNavOverlay();
       hideDrawerOverlay();
       unlockScroll();
