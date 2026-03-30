@@ -251,6 +251,11 @@ export function init() {
     });
   }
 
+  const searchClose = document.querySelector('.search-close');
+  if (searchClose) {
+    searchClose.addEventListener('click', closeSearch);
+  }
+
   // Close search on click outside the header.
   document.addEventListener('click', function (e) {
     if (headerSearch && headerSearch.classList.contains('is-open') && !header.contains(e.target)) {

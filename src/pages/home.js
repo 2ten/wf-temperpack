@@ -12,7 +12,7 @@
 
   // Elements that fade out when a pill is active.
   const fadeEls = [
-    ...document.querySelectorAll('.home-hero-h1, .hero-hint__text, .hero-with'),
+    ...document.querySelectorAll('.hero-home__header, .hero-home__with, .hero-hint--center'),
   ];
 
   function activate(id) {
