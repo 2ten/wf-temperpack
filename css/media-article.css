@@ -1,0 +1,101 @@
+/* from media */
+  .article-page .w-richtext {
+    color: var(--_colors---gray-dark-80);
+  }
+  .article-page .w-richtext h2,
+  .article-page .w-richtext h3,
+  .article-page .w-richtext h4,
+  .article-page .w-richtext h5,
+  .article-page .w-richtext h6 {
+    color: var(--_colors---gray-dark);
+    margin-bottom: 32px;
+  }
+  .article-page .w-richtext h4 {
+    margin-bottom: 24px;
+  }
+  .article-page .w-richtext h5,
+  .article-page .w-richtext h6 {
+    margin-bottom: 8px;
+  }
+  .article-page .w-richtext p {
+    margin-bottom: 24px;
+  }
+  .w-richtext figure:last-child {
+    margin-bottom: 0 !important;
+  }
+  .w-richtext-align-fullwidth.w-richtext-figure-type-image {
+    margin: 48px -48px !important;
+    width: calc(100% + 96px) !important;
+    max-width: none !important;
+  }
+  .w-richtext-align-fullwidth.w-richtext-figure-type-image img {
+    border-radius: 12px;
+    max-width: none;
+  }
+  .w-richtext-align-fullwidth.w-richtext-figure-type-video {
+    margin-top: 48px;
+    margin-bottom: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .w-richtext figcaption {
+    font-size: 14px;
+    text-wrap:balance;
+  }
+
+
+/* from article */
+.article-page .w-richtext{
+  color: var(--_colors---gray-dark-80);
+}
+.article-page .w-richtext h2,
+.article-page .w-richtext h3,
+.article-page .w-richtext h4,
+.article-page .w-richtext h5,
+.article-page .w-richtext h6{
+  color:var(--_colors---gray-dark);
+}
+.article-page .w-richtext h3{
+  font-size:var(--_typography---h4);
+  color:var(--_colors---green-dark);
+  margin-top:48px;
+  margin-bottom:24px;
+}
+
+.w-richtext ul{
+  margin-bottom:24px;
+}
+.article-page .w-richtext h4,
+.article-page .w-richtext h5,
+.article-page .w-richtext h6{
+  font-size:var(--_typography---text-16);
+  margin-bottom:8px;
+  font-weight: var(--_typography---font-weight-semibold);
+}
+.article-page .w-richtext p{
+  margin-bottom:24px;
+ }
+.w-richtext figure:last-child {
+  margin-bottom: 0!important;
+}
+.w-richtext-align-fullwidth.w-richtext-figure-type-image{
+  margin:48px -48px!important;
+  width: calc(100% + 96px)!important;
+  max-width:none!important;
+}
+ .w-richtext-align-fullwidth.w-richtext-figure-type-image img{
+  border-radius:12px;
+  max-width:none;
+ }
+.w-richtext-figure-type-video{
+  margin-bottom:24px;
+}
+  .w-richtext-align-fullwidth.w-richtext-figure-type-video {
+    margin-top: 48px;
+    margin-bottom: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .w-richtext blockquote{
+    margin-bottom:48px;
+  }
