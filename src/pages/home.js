@@ -12,7 +12,7 @@
 
   // Elements that fade out when a pill is active.
   const fadeEls = [
-    ...document.querySelectorAll('.hero-home__header, .hero-home__with, .hero-hint--center'),
+    ...document.querySelectorAll('.hero-home__header, .hero-home__with, .hero-hint--center, .header-fixed'),
   ];
 
   function activate(id) {
@@ -35,10 +35,22 @@
     document.querySelectorAll('[data-image]').forEach(el => el.classList.remove('is-active'));
   }
 
+  const pillContainer = document.querySelector('.flex-pills');
+
   pills.forEach(pill => {
-    pill.addEventListener(eventType, () => activate(pill.dataset.pill));
     if (isHoverDevice) {
+      pill.addEventListener('mouseenter', () => activate(pill.dataset.pill));
       pill.addEventListener('mouseleave', deactivate);
+    } else {
+      pill.addEventListener('click', () => {
+        pill.classList.contains('is-active') ? deactivate() : activate(pill.dataset.pill);
+      });
     }
   });
+
+  if (!isHoverDevice) {
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.pill-large')) deactivate();
+    });
+  }
 })();

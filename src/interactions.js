@@ -73,7 +73,23 @@ class Accordion {
   }
 
   setupAutoRotate() {
-    this.startAutoRotate();
+    const section = this.element.closest('[data-animate]') || this.element;
+
+    // If already visible (e.g. above the fold), start immediately.
+    if (section.classList.contains('is-visible')) {
+      this.startAutoRotate();
+      return;
+    }
+
+    // Otherwise wait for the animation system to add is-visible.
+    const observer = new MutationObserver(() => {
+      if (section.classList.contains('is-visible')) {
+        this.startAutoRotate();
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(section, { attributeFilter: ['class'] });
   }
 
   setupImageSwap() {
