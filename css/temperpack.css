@@ -882,30 +882,29 @@ button.footnote-popover__close svg {
   font-size: 14px;
   text-wrap:balance;
 }
-.article-page .w-richtext blockquote{
-  margin-bottom:48px;
-}
 /* button effect */
 .article-page .w-richtext p > a {
-    color: white;
-    background: var(--_colors---green-dark);
-    border-radius: var(--_effects---radius-md);
-    padding: 12px 17px;
-    text-decoration: none;
-    font-size: var(--_typography---text-14);
-    line-height: var(--_typography---line-height-1);
-    font-weight: var(--_typography---font-weight-semibold);
+  color: white;
+  background: var(--_colors---green-dark);
+  border-radius: var(--_effects---radius-md);
+  padding: 12px 17px;
+  text-decoration: none;
+  font-size: var(--_typography---text-14);
+  line-height: var(--_typography---line-height-1);
+  font-weight: var(--_typography---font-weight-semibold);
 }
-.article-page blockquote{
-    padding:0;
-    margin:0 0 24px;
-    border:solid 1px var(--_colors---gray-border);
-    padding:16px;
-    background:white;
-    border-radius:12px;
-    font-size:var(--_typography---text-14);
+.article-page blockquote:not(.cms-quote__content){
+  padding:0;
+  margin:0 0 24px;
+  border:solid 1px var(--_colors---gray-border);
+  padding:16px;
+  background:white;
+  border-radius:12px;
+  font-size:var(--_typography---text-14);
 }
-.article-page blockquote em{
-    font-size:var(--_typography---text-16);
-    color: var(--_colors---gray-dark);
+.article-page blockquote:not(.cms-quote__content) em{
+  font-size:var(--_typography---text-16);
+  color: var(--_colors---gray-dark);
+  margin-bottom: 8px;
+  display: block;
 }
