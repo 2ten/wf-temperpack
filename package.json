@@ -1,10 +1,10 @@
 {
-  "name": "temperpack-js",
+  "name": "temperpack",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "esbuild src/main.js --bundle --format=iife --outfile=dist/temperpack.js --minify",
-    "dev": "esbuild src/main.js --bundle --format=iife --outfile=dist/temperpack.js --watch"
+    "build": "esbuild js/src/main.js --bundle --format=iife --outfile=js/dist/temperpack.js --minify && esbuild css/temperpack.css --minify --outfile=css/temperpack.min.css",
+    "dev": "esbuild js/src/main.js --bundle --format=iife --outfile=js/dist/temperpack.js --watch"
   },
   "devDependencies": {
     "esbuild": "^0.24.0"
