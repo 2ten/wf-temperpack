@@ -863,10 +863,12 @@ button.footnote-popover__close svg {
 .article-page .w-richtext figure:last-child {
   margin-bottom: 0 !important;
 }
-.article-page .w-richtext-align-fullwidth.w-richtext-figure-type-image {
-  margin: 48px -48px !important;
-  width: calc(100% + 96px) !important;
-  max-width: none !important;
+@media(min-width:991px){
+  .article-page .w-richtext-align-fullwidth.w-richtext-figure-type-image {
+    margin: 48px -48px !important;
+    width: calc(100% + 96px) !important;
+    max-width: none !important;
+  }
 }
 .article-page .w-richtext-figure-type-image img{
   border-radius:12px;
