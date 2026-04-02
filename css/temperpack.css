@@ -342,7 +342,7 @@ transition: color 0.3s ease-out;
 
   /* Force children to respect the 70% width */
   [data-mobile-scroll="true"] > * {
-    flex: 0 0 72% !important; /* 72% allows for a nice peek of the next card */
+    flex: 0 0 84% !important; /* 72% allows for a nice peek of the next card */
     min-width: 0; /* Prevents flex-shrink issues */
     scroll-snap-align: center !important;
     
