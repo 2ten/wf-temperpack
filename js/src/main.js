@@ -1,3 +1,4 @@
+import { init as initAnnouncement } from './announcement.js';
 import { init as initNavigation   } from './navigation.js';
 import { init as initDrawers      } from './drawers.js';
 import { init as initInteractions } from './interactions.js';
@@ -7,6 +8,7 @@ import { init as initForms        } from './forms.js';
 import { init as initFootnotes    } from './footnotes.js';
 
 document.addEventListener('DOMContentLoaded', function () {
+  initAnnouncement();
   initNavigation();
   initDrawers();
   initInteractions();

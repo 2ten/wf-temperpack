@@ -8,6 +8,7 @@ import {
   lockScroll,
   unlockScroll,
 } from './utils.js';
+import { getAnnouncementHeight } from './announcement.js';
 
 const MOUSE_LEAVE_DELAY = 300;
 const MOBILE_BREAKPOINT = 991;
@@ -51,10 +52,39 @@ export function init() {
   // ============================================
   // SCROLL BEHAVIOUR
   // ============================================
+  const SCROLL_BUFFER = 200;
+  let lastScrollY  = 0;
+  let scrolledDown = 0;
+
   function onScroll() {
-    const currentScrollY = window.scrollY;
-    const headerHeight   = headerFixed.offsetHeight;
-    headerFixed.classList.toggle('is-scrolled', currentScrollY > headerHeight);
+    const currentScrollY  = window.scrollY;
+    const delta           = currentScrollY - lastScrollY;
+    const threshold       = getAnnouncementHeight();
+    const pastAnnouncement = currentScrollY > threshold;
+
+    // is-scrolled — for header background/shadow changes
+    headerFixed.classList.toggle('is-scrolled', currentScrollY > getAnnouncementHeight());
+
+    if (delta > 0) {
+      // Scrolling down
+      scrolledDown += delta;
+      if (pastAnnouncement && scrolledDown > SCROLL_BUFFER) {
+        headerFixed.classList.add('is-hidden');
+        headerFixed.classList.remove('is-sticky');
+      }
+    } else {
+      // Scrolling up
+      scrolledDown = 0;
+      if (pastAnnouncement) {
+        headerFixed.classList.add('is-sticky');
+        headerFixed.classList.remove('is-hidden');
+      } else {
+        // Back near top — restore to normal flow
+        headerFixed.classList.remove('is-sticky', 'is-hidden');
+      }
+    }
+
+    lastScrollY = currentScrollY;
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });

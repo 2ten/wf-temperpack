@@ -201,44 +201,72 @@ transition: color 0.3s ease-out;
 }
 
 /* ============================================
+   Announcement bar
+   ============================================ */
+.announcement {
+  overflow: hidden;
+}
+
+/* ============================================
+   Header scroll states
+   ============================================ */
+
+/* Hidden — instantly above viewport, no transition */
+.header-fixed.is-hidden {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(-100%);
+}
+
+/* Sticky — slides down smoothly on scroll up */
+.header-fixed.is-sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+/* Spacer — prevents content jump when header becomes fixed */
+.header-spacer {
+  display: none;
+  height: var(--header-height, 72px);
+}
+
+.header-fixed.is-sticky ~ .header-spacer,
+.header-fixed.is-hidden ~ .header-spacer {
+  display: block;
+}
+
+/* ============================================
    Header states
    ============================================ */
 
-/* Scrolled state — transparent variants pick up solid bg */
-[data-wf--header--variant="base"] .header-fixed.is-scrolled,
-[data-wf--header--variant="light"] .header-fixed.is-scrolled {
-  background: var(--_colors---white);
-}
-.header-fixed.is-scrolled,
+/* Sticky or panel open — solid background and shadow */
+.header-fixed.is-sticky,
 .header-fixed.has-open-panel {
+  background: var(--_colors---white);
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Light variant text flips to dark when scrolled */
-[data-wf--header--variant="light"] .is-scrolled .main-nav__link,
-[data-wf--header--variant="light"] .is-scrolled .main-nav__trigger,
-[data-wf--header--variant="light"] .is-scrolled .header-icon,
-[data-wf--header--variant="light"] .is-scrolled .brand,
-[data-wf--header--variant="light"] .is-scrolled .search-btn{
-  color: var(--_colors---gray-dark);
-}
-[data-wf--header--variant="light"] .is-scrolled .hamburger-line{
-  background-color: var(--_colors---gray-dark);
-}
-[data-wf--header--variant="base"] .header-fixed.has-open-panel,
-[data-wf--header--variant="light"] .header-fixed.has-open-panel {
-  background: var(--_colors---white);
-}
-
-/* Light variant text also flips */
+/* Light variant text flips to dark when sticky or panel open */
+[data-wf--header--variant="light"] .is-sticky .main-nav__link,
+[data-wf--header--variant="light"] .is-sticky .main-nav__trigger,
+[data-wf--header--variant="light"] .is-sticky .header-icon,
+[data-wf--header--variant="light"] .is-sticky .brand,
+[data-wf--header--variant="light"] .is-sticky .search-btn,
 [data-wf--header--variant="light"] .has-open-panel .main-nav__link,
 [data-wf--header--variant="light"] .has-open-panel .main-nav__trigger,
 [data-wf--header--variant="light"] .has-open-panel .header-icon,
 [data-wf--header--variant="light"] .has-open-panel .brand,
-[data-wf--header--variant="light"] .has-open-panel .search-btn{
+[data-wf--header--variant="light"] .has-open-panel .search-btn {
   color: var(--_colors---gray-dark);
 }
-[data-wf--header--variant="light"] .has-open-panel .hamburger-line{
+[data-wf--header--variant="light"] .is-sticky .hamburger-line,
+[data-wf--header--variant="light"] .has-open-panel .hamburger-line {
   background-color: var(--_colors---gray-dark);
 }
 
