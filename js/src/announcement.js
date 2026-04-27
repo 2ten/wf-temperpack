@@ -12,6 +12,13 @@ export function getAnnouncementHeight() {
 }
 
 // ============================================
+// CSS VARIABLE — keeps --announcement-height in sync
+// ============================================
+function setHeightVar(px) {
+  document.documentElement.style.setProperty('--announcement-height', `${px}px`);
+}
+
+// ============================================
 // DISMISS — animate out, remove, persist to localStorage
 // ============================================
 function dismiss() {
@@ -28,6 +35,7 @@ function dismiss() {
 
   announcementEl.addEventListener('transitionend', () => {
     announcementEl.remove();
+    setHeightVar(0);
   }, { once: true });
 
   announcementGone = true;
@@ -55,6 +63,8 @@ export function init() {
     announcementGone = true;
     return;
   }
+
+  setHeightVar(announcementEl.offsetHeight);
 
   const closeBtn = announcementEl.querySelector('.announcement-close');
   if (closeBtn) closeBtn.addEventListener('click', dismiss);

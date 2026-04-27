@@ -69,6 +69,10 @@ export function init() {
       // Scrolling down
       scrolledDown += delta;
       if (pastAnnouncement && scrolledDown > SCROLL_BUFFER) {
+        // If coming from sticky, animate the hide — no blink risk since already fixed
+        if (headerFixed.classList.contains('is-sticky')) {
+          headerFixed.classList.add('is-hiding');
+        }
         headerFixed.classList.add('is-hidden');
         headerFixed.classList.remove('is-sticky');
       }
@@ -77,7 +81,7 @@ export function init() {
       scrolledDown = 0;
       if (pastAnnouncement) {
         headerFixed.classList.add('is-sticky');
-        headerFixed.classList.remove('is-hidden');
+        headerFixed.classList.remove('is-hidden', 'is-hiding');
       } else {
         // Back near top — restore to normal flow
         headerFixed.classList.remove('is-sticky', 'is-hidden');

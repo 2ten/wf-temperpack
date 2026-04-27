@@ -207,6 +207,13 @@ transition: color 0.3s ease-out;
   overflow: hidden;
 }
 
+/* Pull content up by full header height (nav + announcement) so heroes sit at viewport top */
+.header {
+  margin-bottom: calc(-1 * (var(--header-height) + var(--announcement-height, 0px)));
+}
+.header[data-wf--header--variant="static"]{
+  margin-bottom: 0;
+}
 /* ============================================
    Header scroll states
    ============================================ */
@@ -218,6 +225,11 @@ transition: color 0.3s ease-out;
   left: 0;
   right: 0;
   transform: translateY(-100%);
+}
+
+/* Animated hide — only when coming from sticky state */
+.header-fixed.is-hidden.is-hiding {
+  transition: transform 0.3s ease;
 }
 
 /* Sticky — slides down smoothly on scroll up */

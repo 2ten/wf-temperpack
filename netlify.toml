@@ -1,0 +1,9 @@
+[[headers]]
+  for = "/css/*.css"
+  [headers.values]
+    Cache-Control = "public, no-cache, must-revalidate"
+
+[[headers]]
+  for = "/js/dist/*.js"
+  [headers.values]
+    Cache-Control = "public, no-cache, must-revalidate"
