@@ -42,6 +42,7 @@ function dismiss() {
 
   const id = announcementEl.dataset.announcementId;
   if (id) localStorage.setItem(LS_KEY, id);
+  document.documentElement.classList.add('announcement-dismissed');
 }
 
 // ============================================
@@ -54,14 +55,21 @@ export function init() {
     return;
   }
 
-  // Already dismissed — remove immediately before paint
   const id     = announcementEl.dataset.announcementId;
   const stored = localStorage.getItem(LS_KEY);
+
   if (id && stored === id) {
+    // Same announcement — already dismissed, CSS is hiding it, just clean up
     announcementEl.remove();
     announcementEl   = null;
     announcementGone = true;
     return;
+  }
+
+  if (stored && id && stored !== id) {
+    // New announcement — clear dismissed state so it shows
+    document.documentElement.classList.remove('announcement-dismissed');
+    localStorage.removeItem(LS_KEY);
   }
 
   setHeightVar(announcementEl.offsetHeight);

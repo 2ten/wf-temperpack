@@ -207,6 +207,11 @@ transition: color 0.3s ease-out;
   overflow: hidden;
 }
 
+/* Hidden immediately via inline script before paint — no flash */
+html.announcement-dismissed .announcement {
+  display: none;
+}
+
 /* Pull content up by full header height (nav + announcement) so heroes sit at viewport top */
 .header {
   margin-bottom: calc(-1 * (var(--header-height) + var(--announcement-height, 0px)));
